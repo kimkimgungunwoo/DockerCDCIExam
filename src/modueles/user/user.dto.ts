@@ -82,7 +82,7 @@ export class DeleteUserResponseDTO {
   @ApiProperty()
   userId: number;
 
-  constructor(user: User) {
-    this.userId = user.id;
+  constructor(userId: number) {
+    this.userId = userId;
   }
 }

@@ -104,7 +104,7 @@ export class CommentDeleteResponseDTO {
   @ApiProperty()
   commentId: number;
 
-  constructor(comment: Comment) {
-    this.commentId = comment.id;
+  constructor(commentId: number) {
+    this.commentId = commentId;
   }
 }

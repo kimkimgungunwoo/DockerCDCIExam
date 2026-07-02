@@ -95,7 +95,7 @@ export class CommentService {
     const comment = await this.commentRepo.findOneBy({ id: commentId });
     if (!comment) throw new CommentNotFoundException();
     await this.commentRepo.remove(comment);
-    return new CommentDeleteResponseDTO({ ...comment, id: commentId });
+    return new CommentDeleteResponseDTO(commentId);
   }
 
   async countCommentsByUserId(userId: number): Promise<number> {

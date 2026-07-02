@@ -70,6 +70,6 @@ export class UserService {
     if (!user) throw new UserNotFoundException();
 
     await this.userRepo.remove(user);
-    return new DeleteUserResponseDTO({ ...user, id: userId });
+    return new DeleteUserResponseDTO(userId);
   }
 }

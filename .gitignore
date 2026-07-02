@@ -59,3 +59,9 @@ README.md
 
 .prettierrc
 nest-cli.json
+
+# Claude Code
+.claude
+
+# TypeScript cache
+*.tsbuildinfo

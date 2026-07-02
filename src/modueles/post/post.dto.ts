@@ -112,7 +112,7 @@ export class PostDeleteResponseDTO {
   @ApiProperty()
   postId: number;
 
-  constructor(post: Post) {
-    this.postId = post.id;
+  constructor(postId: number) {
+    this.postId = postId;
   }
 }

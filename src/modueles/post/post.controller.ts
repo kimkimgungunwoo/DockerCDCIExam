@@ -8,12 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import {
-  ApiOperation,
-  ApiParam,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PostService } from './post.service';
 import {
   PostCreateRequestDTO,

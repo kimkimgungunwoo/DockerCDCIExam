@@ -83,6 +83,6 @@ export class PostService {
     if (!post) throw new PostNotFoundException();
 
     await this.postRepo.remove(post);
-    return new PostDeleteResponseDTO({ ...post, id: postId });
+    return new PostDeleteResponseDTO(postId);
   }
 }
