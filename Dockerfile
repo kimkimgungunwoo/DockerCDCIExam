@@ -18,6 +18,5 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
-COPY tsconfig.json ./
 
-CMD ["node", "-r", "tsconfig-paths/register", "dist/main"]
+CMD ["node", "dist/main.js"]
