@@ -17,7 +17,10 @@ import {
 import { Comment } from '../comment/comment.entity';
 import { User } from '../user/user.entity';
 import { PostLike } from './post-like.entity';
-import { AlreadyLikedException, NotLikedException } from './post-like.exception';
+import {
+  AlreadyLikedException,
+  NotLikedException,
+} from './post-like.exception';
 
 @Injectable()
 export class PostService {
@@ -92,10 +95,7 @@ export class PostService {
     return new PostDeleteResponseDTO(postId);
   }
 
-  async likePost(
-    postId: number,
-    userId: number,
-  ): Promise<PostLikeResponseDTO> {
+  async likePost(postId: number, userId: number): Promise<PostLikeResponseDTO> {
     const [post, user] = await Promise.all([
       this.postRepo.findOneBy({ id: postId }),
       this.userRepo.findOneBy({ id: userId }),
