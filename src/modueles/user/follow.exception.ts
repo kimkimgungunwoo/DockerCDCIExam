@@ -15,6 +15,10 @@ export class NotFollowingException extends AppException {
 
 export class CannotFollowSelfException extends AppException {
   constructor() {
-    super(ErrorCode.CANNOT_FOLLOW_SELF, 400, '자기 자신을 팔로우할 수 없습니다');
+    super(
+      ErrorCode.CANNOT_FOLLOW_SELF,
+      400,
+      '자기 자신을 팔로우할 수 없습니다',
+    );
   }
 }

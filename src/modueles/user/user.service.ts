@@ -109,7 +109,10 @@ export class UserService {
     );
   }
 
-  async follow(followerId: number, followingId: number): Promise<FollowResponseDTO> {
+  async follow(
+    followerId: number,
+    followingId: number,
+  ): Promise<FollowResponseDTO> {
     if (followerId === followingId) throw new CannotFollowSelfException();
 
     const [follower, following] = await Promise.all([
@@ -130,7 +133,10 @@ export class UserService {
     return new FollowResponseDTO(followerId, followingId);
   }
 
-  async unfollow(followerId: number, followingId: number): Promise<FollowResponseDTO> {
+  async unfollow(
+    followerId: number,
+    followingId: number,
+  ): Promise<FollowResponseDTO> {
     if (followerId === followingId) throw new CannotFollowSelfException();
 
     const follow = await this.followRepo.findOne({
