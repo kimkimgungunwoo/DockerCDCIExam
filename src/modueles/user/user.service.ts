@@ -12,6 +12,8 @@ import {
   UpdateUserRequestDTO,
   userInfoDTO,
 } from './user.dto';
+import { PostInfoDTO } from '../post/post.dto';
+import { CommentInfoDTO } from '../comment/comment.dto';
 
 @Injectable()
 export class UserService {
@@ -71,5 +73,29 @@ export class UserService {
 
     await this.userRepo.remove(user);
     return new DeleteUserResponseDTO(userId);
+  }
+
+  async getUserPosts(userId: number): Promise<PostInfoDTO[]> {
+    const user = await this.userRepo.findOneBy({ id: userId });
+    if (!user) throw new UserNotFoundException();
+
+    const posts = await this.postRepo.find({
+      where: { author: { id: userId } },
+      relations: { author: true },
+    });
+    return posts.map((post) => new PostInfoDTO(post, post.author));
+  }
+
+  async getUserComments(userId: number): Promise<CommentInfoDTO[]> {
+    const user = await this.userRepo.findOneBy({ id: userId });
+    if (!user) throw new UserNotFoundException();
+
+    const comments = await this.commentRepo.find({
+      where: { author: { id: userId } },
+      relations: { author: true, post: true },
+    });
+    return comments.map(
+      (comment) => new CommentInfoDTO(comment, comment.author, comment.post),
+    );
   }
 }

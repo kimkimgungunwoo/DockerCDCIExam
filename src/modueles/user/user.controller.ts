@@ -17,6 +17,8 @@ import {
   UpdateUserRequestDTO,
   userInfoDTO,
 } from './user.dto';
+import { PostInfoDTO } from '../post/post.dto';
+import { CommentInfoDTO } from '../comment/comment.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -68,5 +70,25 @@ export class UserController {
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<DeleteUserResponseDTO> {
     return this.userService.deleteUser(userId);
+  }
+
+  @Get(':userId/posts')
+  @ApiOperation({ summary: '유저별 게시글 목록 조회' })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({ status: 200, type: [PostInfoDTO] })
+  getUserPosts(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<PostInfoDTO[]> {
+    return this.userService.getUserPosts(userId);
+  }
+
+  @Get(':userId/comments')
+  @ApiOperation({ summary: '유저별 댓글 목록 조회' })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({ status: 200, type: [CommentInfoDTO] })
+  getUserComments(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<CommentInfoDTO[]> {
+    return this.userService.getUserComments(userId);
   }
 }
