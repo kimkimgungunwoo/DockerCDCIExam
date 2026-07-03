@@ -15,6 +15,8 @@ import {
   PostCreateResponseDTO,
   PostDeleteResponseDTO,
   PostInfoDTO,
+  PostLikeCountDTO,
+  PostLikeResponseDTO,
   PostUpdateRequestDTO,
   PostUpdateResponseDTO,
 } from './post.dto';
@@ -71,5 +73,39 @@ export class PostController {
     @Param('postId', ParseIntPipe) postId: number,
   ): Promise<PostDeleteResponseDTO> {
     return this.postService.deletePost(postId);
+  }
+
+  @Post(':postId/like/:userId')
+  @ApiOperation({ summary: '게시글 좋아요' })
+  @ApiParam({ name: 'postId', type: Number })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({ status: 201, type: PostLikeResponseDTO })
+  likePost(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<PostLikeResponseDTO> {
+    return this.postService.likePost(postId, userId);
+  }
+
+  @Delete(':postId/like/:userId')
+  @ApiOperation({ summary: '게시글 좋아요 취소' })
+  @ApiParam({ name: 'postId', type: Number })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({ status: 200, type: PostLikeResponseDTO })
+  unlikePost(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<PostLikeResponseDTO> {
+    return this.postService.unlikePost(postId, userId);
+  }
+
+  @Get(':postId/like/count')
+  @ApiOperation({ summary: '게시글 좋아요 수 조회' })
+  @ApiParam({ name: 'postId', type: Number })
+  @ApiResponse({ status: 200, type: PostLikeCountDTO })
+  getLikeCount(
+    @Param('postId', ParseIntPipe) postId: number,
+  ): Promise<PostLikeCountDTO> {
+    return this.postService.getLikeCount(postId);
   }
 }

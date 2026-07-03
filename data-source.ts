@@ -3,6 +3,8 @@ import { Comment } from 'src/modueles/comment/comment.entity';
 import { Post } from 'src/modueles/post/post.entity';
 import { DataSource } from 'typeorm';
 import { User } from 'src/modueles/user/user.entity';
+import { Follow } from 'src/modueles/user/follow.entity';
+import { PostLike } from 'src/modueles/post/post-like.entity';
 
 dotenv.config();
 
@@ -17,7 +19,7 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: true,
 
-  entities: [User, Post, Comment],
+  entities: [User, Post, Comment, Follow, PostLike],
   migrations: ['src/migrations/*.ts'],
   subscribers: [],
 });

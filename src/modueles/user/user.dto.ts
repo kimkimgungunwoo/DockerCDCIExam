@@ -86,3 +86,33 @@ export class DeleteUserResponseDTO {
     this.userId = userId;
   }
 }
+
+export class FollowUserDTO {
+  @ApiProperty()
+  userId: number;
+
+  @ApiProperty()
+  username: string;
+
+  @ApiProperty()
+  email: string;
+
+  constructor(user: User) {
+    this.userId = user.id;
+    this.username = user.username;
+    this.email = user.email;
+  }
+}
+
+export class FollowResponseDTO {
+  @ApiProperty()
+  followerId: number;
+
+  @ApiProperty()
+  followingId: number;
+
+  constructor(followerId: number, followingId: number) {
+    this.followerId = followerId;
+    this.followingId = followingId;
+  }
+}

@@ -12,6 +12,15 @@ export const ErrorCode = {
 
   // Comment
   COMMENT_NOT_FOUND: 'C001',
+
+  // Follow
+  ALREADY_FOLLOWING: 'F001',
+  NOT_FOLLOWING: 'F002',
+  CANNOT_FOLLOW_SELF: 'F003',
+
+  // Like
+  ALREADY_LIKED: 'L001',
+  NOT_LIKED: 'L002',
 } as const;
 
 export type ErrorCodeType = (typeof ErrorCode)[keyof typeof ErrorCode];
