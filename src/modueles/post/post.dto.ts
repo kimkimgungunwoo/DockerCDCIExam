@@ -116,3 +116,33 @@ export class PostDeleteResponseDTO {
     this.postId = postId;
   }
 }
+
+export class PostLikeResponseDTO {
+  @ApiProperty()
+  postId: number;
+
+  @ApiProperty()
+  userId: number;
+
+  @ApiProperty()
+  likeCount: number;
+
+  constructor(postId: number, userId: number, likeCount: number) {
+    this.postId = postId;
+    this.userId = userId;
+    this.likeCount = likeCount;
+  }
+}
+
+export class PostLikeCountDTO {
+  @ApiProperty()
+  postId: number;
+
+  @ApiProperty()
+  likeCount: number;
+
+  constructor(postId: number, likeCount: number) {
+    this.postId = postId;
+    this.likeCount = likeCount;
+  }
+}

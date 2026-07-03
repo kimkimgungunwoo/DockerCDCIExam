@@ -9,11 +9,15 @@ import {
   PostCreateResponseDTO,
   PostDeleteResponseDTO,
   PostInfoDTO,
+  PostLikeCountDTO,
+  PostLikeResponseDTO,
   PostUpdateRequestDTO,
   PostUpdateResponseDTO,
 } from './post.dto';
 import { Comment } from '../comment/comment.entity';
 import { User } from '../user/user.entity';
+import { PostLike } from './post-like.entity';
+import { AlreadyLikedException, NotLikedException } from './post-like.exception';
 
 @Injectable()
 export class PostService {
@@ -24,6 +28,8 @@ export class PostService {
     private readonly userRepo: Repository<User>,
     @InjectRepository(Comment)
     private readonly commentRepo: Repository<Comment>,
+    @InjectRepository(PostLike)
+    private readonly postLikeRepo: Repository<PostLike>,
   ) {}
 
   async createPost(
@@ -84,5 +90,57 @@ export class PostService {
 
     await this.postRepo.remove(post);
     return new PostDeleteResponseDTO(postId);
+  }
+
+  async likePost(
+    postId: number,
+    userId: number,
+  ): Promise<PostLikeResponseDTO> {
+    const [post, user] = await Promise.all([
+      this.postRepo.findOneBy({ id: postId }),
+      this.userRepo.findOneBy({ id: userId }),
+    ]);
+    if (!post) throw new PostNotFoundException();
+    if (!user) throw new UserNotFoundException();
+
+    const existing = await this.postLikeRepo.findOne({
+      where: { post: { id: postId }, user: { id: userId } },
+    });
+    if (existing) throw new AlreadyLikedException();
+
+    await this.postLikeRepo.save(this.postLikeRepo.create({ post, user }));
+    const likeCount = await this.postLikeRepo.count({
+      where: { post: { id: postId } },
+    });
+
+    return new PostLikeResponseDTO(postId, userId, likeCount);
+  }
+
+  async unlikePost(
+    postId: number,
+    userId: number,
+  ): Promise<PostLikeResponseDTO> {
+    const like = await this.postLikeRepo.findOne({
+      where: { post: { id: postId }, user: { id: userId } },
+    });
+    if (!like) throw new NotLikedException();
+
+    await this.postLikeRepo.remove(like);
+    const likeCount = await this.postLikeRepo.count({
+      where: { post: { id: postId } },
+    });
+
+    return new PostLikeResponseDTO(postId, userId, likeCount);
+  }
+
+  async getLikeCount(postId: number): Promise<PostLikeCountDTO> {
+    const post = await this.postRepo.findOneBy({ id: postId });
+    if (!post) throw new PostNotFoundException();
+
+    const likeCount = await this.postLikeRepo.count({
+      where: { post: { id: postId } },
+    });
+
+    return new PostLikeCountDTO(postId, likeCount);
   }
 }
