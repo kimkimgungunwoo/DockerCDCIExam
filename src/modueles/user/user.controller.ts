@@ -14,6 +14,8 @@ import {
   CreateUserRequestDTO,
   CreateUserResponseDTO,
   DeleteUserResponseDTO,
+  FollowResponseDTO,
+  FollowUserDTO,
   UpdateUserRequestDTO,
   userInfoDTO,
 } from './user.dto';
@@ -90,5 +92,49 @@ export class UserController {
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<CommentInfoDTO[]> {
     return this.userService.getUserComments(userId);
+  }
+
+  @Post(':userId/follow/:targetId')
+  @ApiOperation({ summary: '팔로우' })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiParam({ name: 'targetId', type: Number })
+  @ApiResponse({ status: 201, type: FollowResponseDTO })
+  follow(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('targetId', ParseIntPipe) targetId: number,
+  ): Promise<FollowResponseDTO> {
+    return this.userService.follow(userId, targetId);
+  }
+
+  @Delete(':userId/follow/:targetId')
+  @ApiOperation({ summary: '언팔로우' })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiParam({ name: 'targetId', type: Number })
+  @ApiResponse({ status: 200, type: FollowResponseDTO })
+  unfollow(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('targetId', ParseIntPipe) targetId: number,
+  ): Promise<FollowResponseDTO> {
+    return this.userService.unfollow(userId, targetId);
+  }
+
+  @Get(':userId/followers')
+  @ApiOperation({ summary: '팔로워 목록 (나를 팔로우하는 사람들)' })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({ status: 200, type: [FollowUserDTO] })
+  getFollowers(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<FollowUserDTO[]> {
+    return this.userService.getFollowers(userId);
+  }
+
+  @Get(':userId/following')
+  @ApiOperation({ summary: '팔로잉 목록 (내가 팔로우하는 사람들)' })
+  @ApiParam({ name: 'userId', type: Number })
+  @ApiResponse({ status: 200, type: [FollowUserDTO] })
+  getFollowing(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<FollowUserDTO[]> {
+    return this.userService.getFollowing(userId);
   }
 }
